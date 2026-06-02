@@ -1,4 +1,5 @@
 import pygame
+import constants
 
 # Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
@@ -22,3 +23,9 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt: float) -> None:
         # must override
         pass
+
+    def collides_with(self, other):
+        distance = self.position.distance_to(other.position)
+        if distance <= constants.PLAYER_RADIUS:
+            return True
+        else: return False
