@@ -33,7 +33,9 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    while True: 
+    game_running = True
+
+    while game_running: 
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -43,8 +45,7 @@ def main():
         for member in asteroids:
             if user_player.collides_with(member):
                 log_event("player_hit")
-                print("Game over!")
-                sys.exit()
+                game_running = False
             for bullet in shots: 
                 if bullet.collides_with(member):
                     bullet.kill()
@@ -54,6 +55,24 @@ def main():
             object.draw(screen)
         pygame.display.flip()
         dt = clock.tick(60) / 1000
+    
+    while game_running == False: 
+        log_state()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            if event.type == pygame.KEYDOWN:
+                return
+        screen.fill("black")
+        my_font = pygame.font.SysFont('Arial', 75)
+        my_font_small = pygame.font.SysFont('Arial', 25)
+        text_surface_one = my_font.render('Game Over', True, (255, 255, 255))
+        text_rect_one = text_surface_one.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        screen.blit(text_surface_one, text_rect_one)
+        text_surface_two = my_font_small.render('Press Any Key to Close', True, (255, 255, 255))
+        text_rect_two = text_surface_two.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 50))
+        screen.blit(text_surface_two, text_rect_two)
+        pygame.display.flip()
 
 
 if __name__ == "__main__":
